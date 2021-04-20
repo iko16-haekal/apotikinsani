@@ -2,11 +2,12 @@
 
 @section('content')
 @include('components.navbar')
+
+
 <div class="pb-5 mt-5 pt-3">
     <div class="container mt-5 ">
       <div class="row">
-        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
-
+        <div class="col-lg-8 p-1 bg-white rounded shadow-sm mb-5">
           <!-- Shopping cart table -->
           <div class="table-responsive">
             <table class="table">
@@ -42,7 +43,7 @@
                     </div>
                   </div>
                 </th>
-                <td class="border-0 align-middle"><strong>{{$cart->price}}</strong></td>
+                <td class="border-0 align-middle"><strong>{{intval($cart->product->variation[0]->sell_price_inc_tax)}}</strong></td>
                 <td class="border-0 align-middle"><strong>{{$cart->quantity}}</strong></td>
                 <td class="border-0 align-middle">
                   <form id="delete-form" action="{{ url('cart/'.$cart->id) }}" method="POST">
@@ -62,5 +63,48 @@
           </div>
           <!-- End -->
         </div>
+
+        <div class="col-lg-4">
+      @if ($total > 0)
+        @if(count($errors) > 0)
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+             @endforeach
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if ($total <= 50000)
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      minimal pembelian 50000
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    <div class="card mb-3 shadow-sm" style="border: none">
+      <div class="card-body" >
+       @if ($total <= 50000)
+       <p class="font-weight-bold">total: Rp.{{$total}}</p>
+       <a href="{{url("/products")}}" class="btn btn-success">belanja lagi</a>
+       @else
+       <form action="{{url("/product/transaction")}}" method="POST">
+        @csrf
+        <div class="mb-3">
+          <label for="penerima" class="form-label">penerima</label>
+          <input value="{{Auth::user()->name}}" type="text" name="penerima" class="form-control" id="alamat">
+        </div>
+        <div class="mb-3">
+          <label for="alamat" class="form-label">alamat</label>
+          <textarea required type="text" name="alamat" class="form-control" id="alamat">
+          </textarea>
+          <input type="hidden" name="total" value="{{$total}}">
+        </div>
+        <p class="font-weight-bold">total: Rp.{{$total}}</p>
+        <button class="btn btn-success" type="submit">checkout</button>
+      </form>
+       @endif
+      </div>
+    </div>
+      </div>
+      @endif
       </div>
 @endsection

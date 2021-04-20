@@ -8,26 +8,27 @@ use App\Models\transaction;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class homeController extends Controller
 {
     public function home(Request $request)
     {
-        $products = product::where('enable_stock', '>', 0)->limit(8)->latest()->get();
+        $products = product::limit(8)->latest()->get();
         return View("home", compact("products"));
     }
 
     public function show(Request $request, $id)
     {
-        $product = product::find($id);
+        $product = product::findOrfail($id);
         return view("show", compact('product'));
     }
     public function products(Request $request)
     {
         $keyword = $request->keyword;
         if ($keyword) {
-            $products = product::where('name', 'like', "%" . $keyword . "%")->where("enable_stock", ">", 0)->latest()
-                ->paginate();
+            $products = product::where('name', 'like', "%" . $keyword . "%")->latest()
+                ->paginate(8);
         } else {
             $products = product::latest()
                 ->paginate("8");
@@ -37,14 +38,21 @@ class homeController extends Controller
 
     public function transaction(Request $request)
     {
+        $this->validate($request, [
+            "penerima" => "required",
+            "alamat" => "required",
+            "total" => "required"
+        ]);
+
         transaction::create([
             "contact_id" => Auth::id(),
             "delivered_to" => $request->penerima,
-            "final_total" => $request->price * $request->quantity,
+            "final_total" => $request->total,
             "shipping_address" => $request->alamat,
             "status" => "belum diproses"
         ]);
 
+        Cart::where("contact_id", Auth::id())->delete();
         return redirect()->to('/');
     }
 
@@ -68,7 +76,9 @@ class homeController extends Controller
     public function keranjang(Request $request)
     {
         $carts = Cart::where("contact_id", Auth::id())->latest()->get();
-        return view('keranjang', compact("carts"));
+        $total = Cart::where("contact_id", Auth::id())->latest()->get()->sum("price");
+
+        return view('keranjang', ["carts" => $carts, "total" => "$total"]);
     }
 
     public function destroyCart($id)

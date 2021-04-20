@@ -13,4 +13,14 @@ class product extends Model
     {
         return $this->hasMany(Cart::class);
     }
+
+    public function variation()
+    {
+        return $this->hasMany(Variation::class, "product_id");
+    }
+
+    public function variation_location_detail()
+    {
+        return $this->hasMany(Variation_location_detail::class, "product_id");
+    }
 }

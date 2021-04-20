@@ -1,4 +1,4 @@
-@extends('layout',["title" => "obat pencahar"])
+@extends('layout',["title" => $product["name"]])
 
 
 
@@ -195,14 +195,14 @@
                             {{-- <div class="product_meta">
                                 <span class="posted_in"> <strong>Categories:</strong>  <a rel="tag " class="text-success" href="#">T-shirt</a>.</span>
                             </div> --}}
-                            <div class="m-bot15"> <strong>Price : </strong>  <span class="pro-price text-success"> Rp.{{$product["price"]}}</span></div>
-                            <form action="/cart" method="POST">
+                            <div class="m-bot15"> <strong>Price : </strong>  <span class="pro-price text-success">Rp.{{intval($product->variation[0]->sell_price_inc_tax)}}</span></div>
+                            <form action="{{url("/cart")}}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label>Quantity</label>
-                                    <input value="1" name="quantity" min="1" type="number" placeholder="1" class="form-control quantity">
+                                    <input value="1" name="quantity" min="1" max="{{intval($product->variation_location_detail[0]->qty_available)}}" type="number" placeholder="1" class="form-control quantity">
                                 </div>
-                                <input value="{{$product["price"]}}" name="price"  type="hidden">
+                                <input value="{{intval($product->variation[0]->sell_price_inc_tax)}}" name="price"  type="hidden">
                                 <input value="{{$product["id"]}}" name="product_id"  type="hidden">
                                 <p>
                                     <button class="btn btn-round btn-success my-4" type="submit">masukan keranjang</button>

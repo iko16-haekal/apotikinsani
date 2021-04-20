@@ -24,7 +24,7 @@
             {{Auth::user()->name}}
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-            <li><a  class="dropdown-item" href="{{ url('/keranjang') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <li><a  class="dropdown-item" href="{{ url('/keranjang') }}">
               keranjang
           </a></li>
             <li><a  class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

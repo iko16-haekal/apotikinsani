@@ -23,9 +23,13 @@
                 <div class="card-body">
                   <h5 class="card-title text-dark">{{$product["name"]}}</h5>
                   <div class="buy d-flex justify-content-between align-items-center">
-                    <div class="price text-success"><h5 class="mt-4">Rp.{{$product["price"]}}</h5></div>
+                    <div class="price text-success"><h5 class="mt-4">Rp.{{intval($product->variation[0]->sell_price_inc_tax)}}</h5></div>
                   </div>
-                  <a style="width:100%" href="{{url("/products/" . $product["id"])}}" class="btn btn-success mt-3">BELI</a>
+                  @if (intval($product->variation_location_detail[0]->qty_available) == 0)
+                  <button   style="width:100%" class="btn btn-danger mt-3">stock habis</button>
+              @else
+              <a style="width:100%" href="{{url("/products/" . $product["id"])}}" class="btn btn-success mt-3">BELI</a>
+              @endif
                 </div>
             </div>
         </div>
