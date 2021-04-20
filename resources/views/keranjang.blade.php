@@ -53,7 +53,9 @@
                 </form>
                 </td>
               </tr>
-
+              <ul style="display: none">
+                <li class="total-harga">{{intval($cart->product->variation[0]->sell_price_inc_tax) * $cart->quantity}}</li>
+              </ul>
                @endforeach
                <form id="delete-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
@@ -96,9 +98,16 @@
           <label for="alamat" class="form-label">alamat</label>
           <textarea required type="text" name="alamat" class="form-control" id="alamat">
           </textarea>
-          <input type="hidden" name="total" value="{{$total}}">
+          <input type="hidden"  id="form-total" name="total">
         </div>
-        <p class="font-weight-bold">total: Rp.{{$total}}</p>
+        <div class="mb-3">
+          <label for="metode" class="form-label">metode pembayaran</label>
+          <select class="form-select" name="metode" id="metode">
+            <option value="transfer">transfer</option>
+            <option value="cod">cod</option>
+          </select>
+        </div>
+        <p class="font-weight-bold">total: Rp.<span class="total-display"></span></p>
         <button class="btn btn-success" type="submit">checkout</button>
       </form>
        @endif
@@ -107,4 +116,17 @@
       </div>
       @endif
       </div>
+
+
+      <script>
+       const totalharga = Array.from(document.querySelectorAll(".total-harga"));
+       const totalDisplay = document.querySelector(".total-display");
+       const formtotal = document.getElementById("form-total");
+       const totals = totalharga.map(total => {
+        return parseInt(total.innerHTML)
+        }).reduce((a,b) => a + b)
+       totalDisplay.innerHTML = totals;
+       formtotal.value = totals;
+      
+      </script>
 @endsection

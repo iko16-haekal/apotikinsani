@@ -28,10 +28,10 @@ class homeController extends Controller
         $keyword = $request->keyword;
         if ($keyword) {
             $products = product::where('name', 'like', "%" . $keyword . "%")->latest()
-                ->paginate(8);
+                ->simplePaginate(8);
         } else {
             $products = product::latest()
-                ->paginate("8");
+                ->simplePaginate("8");
         }
         return view("products", compact("products"));
     }
@@ -49,7 +49,8 @@ class homeController extends Controller
             "delivered_to" => $request->penerima,
             "final_total" => $request->total,
             "shipping_address" => $request->alamat,
-            "status" => "belum diproses"
+            "status" => "belum diproses",
+            "additional_notes" => $request->metode
         ]);
 
         Cart::where("contact_id", Auth::id())->delete();
@@ -83,7 +84,11 @@ class homeController extends Controller
 
     public function destroyCart($id)
     {
-        Cart::find($id)->delete();
+        $cart = Cart::find($id);
+
+        if ($cart->contact_id == Auth::id()) {
+            $cart->delete();
+        }
         return redirect("/keranjang");
     }
 }

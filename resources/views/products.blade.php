@@ -35,8 +35,8 @@
         </div>
           @endforeach
           
-          <div class="col">
-            {!! $products->onEachSide(1)->links() !!}
+          <div class="col d-flex justify-content-center mt-5">
+          {!! $products->onEachSide(0)->links() !!}
           </div>
       </div>
   </div>

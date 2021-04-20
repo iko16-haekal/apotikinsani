@@ -200,7 +200,10 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Quantity</label>
-                                    <input value="1" name="quantity" min="1" max="{{intval($product->variation_location_detail[0]->qty_available)}}" type="number" placeholder="1" class="form-control quantity">
+                                    <div class="d-flex align-items-center">
+                                        <input value="1" name="quantity" min="1" max="{{intval($product->variation_location_detail[0]->qty_available)}}" type="number" placeholder="1" class="form-control quantity">
+                                        <h6>&nbsp; {{$product->unit->short_name}}</h6>
+                                    </div>
                                 </div>
                                 <input value="{{intval($product->variation[0]->sell_price_inc_tax)}}" name="price"  type="hidden">
                                 <input value="{{$product["id"]}}" name="product_id"  type="hidden">

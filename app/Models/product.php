@@ -23,4 +23,9 @@ class product extends Model
     {
         return $this->hasMany(Variation_location_detail::class, "product_id");
     }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }
