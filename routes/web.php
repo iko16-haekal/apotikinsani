@@ -19,7 +19,8 @@ Route::get('/products/', [homeController::class, 'products']);
 Route::get('/products/{id}', [homeController::class, 'show']);
 Route::middleware(['auth'])->group(function () {
     Route::post('/product/transaction', [homeController::class, 'transaction']);
-    Route::get('/checkout', [homeController::class, 'checkout']);
+    Route::get('/invoice/', [homeController::class, 'listInvoice']);
+    Route::get('/invoice/{id}', [homeController::class, 'invoice']);
     Route::get('/keranjang', [homeController::class, 'keranjang']);
     Route::post('/cart', [homeController::class, 'cart']);
     Route::delete('/cart/{id}', [homeController::class, 'destroyCart']);

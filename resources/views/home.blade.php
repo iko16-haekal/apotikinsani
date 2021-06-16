@@ -18,26 +18,28 @@
       
        @foreach ($products as $product)
        <div class="col-6 col-md-3 my-3">
-      
-          <div class="card"  style="width: 100%">
-            <img class="card-img " @if ($product["image"])
-                src="{{'http://kasir.apotekinsani.com/upload/img/' . $product["image"]}}"
-            @else
-                src="https://i.stack.imgur.com/y9DpT.jpg"
-            @endif alt="{{$product["name"]}}">
-            
-            <div class="card-body">
-              <h5 class="card-title text-dark">{{ $product["name"]}}</h5>
-              <div class="buy d-flex justify-content-between align-items-center">
-                <div class="price text-success"><h5 class="mt-4">Rp.{{intval($product->variation[0]->sell_price_inc_tax)}}</h5></div>
-              </div>
-              @if (intval($product->variation_location_detail[0]->qty_available) == 0)
-                  <button   style="width:100%" class="btn btn-danger mt-3">stock habis</button>
-              @else 
-              <a style="width:100%" href="{{url("/products/" . $product["id"])}}" class="btn btn-success mt-3">BELI</a>
-              @endif
+      <a href="{{url("/products/" . $product["id"])}}">
+        <div class="card"  style="width: 100%">
+          <img class="card-img " @if ($product["image"])
+              src="{{'http://kasir.apotekinsani.com/upload/img/' . $product["image"]}}"
+          @else
+              src="https://i.stack.imgur.com/y9DpT.jpg"
+          @endif alt="{{$product["name"]}}">
+          
+          <div class="card-body">
+            <h5 class="card-title text-dark">{{ $product["name"]}}</h5>
+            <div class="buy d-flex justify-content-between align-items-center">
+              <div class="price text-success"><h5 class="mt-4">Rp.{{intval($product->variation[0]->sell_price_inc_tax)}}</h5></div>
             </div>
-        </div>
+            @if (intval($product->variation_location_detail[0]->qty_available) == 0)
+                <button   style="width:100%" class="btn btn-danger mt-3">stock habis</button>
+            @else 
+            <a style="width:100%" href="{{url("/products/" . $product["id"])}}" class="btn btn-success mt-3">BELI</a>
+            @endif
+          </div>
+      </div>
+      </a>
+         
     </div>
        @endforeach
       

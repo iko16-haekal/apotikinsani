@@ -98,9 +98,8 @@
                 <div class="col-sm-6 col-md-3 item">
                     <h3>sitemap</h3>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Product</a></li>
-                        <li><a href="#">about</a></li>
+                        <li><a href="{{url("/")}}">Home</a></li>
+                        <li><a href="{{url("/products")}}">Product</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-6 col-md-3 item">

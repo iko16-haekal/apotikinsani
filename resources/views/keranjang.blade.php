@@ -99,6 +99,14 @@
           <textarea required type="text" name="alamat" class="form-control" id="alamat">
           </textarea>
           <input type="hidden"  id="form-total" name="total">
+          <input type="hidden"  id="lat" name="lat">
+          <input type="hidden"  id="long" name="long">
+
+          @foreach ($carts as $cart)
+              <div style="display: none">
+                <input type="text" type="hidden" name="product_id[]" value="{{$cart->product->id}}">
+                <input type="text" type="hidden" name="quantity[]" value="{{$cart->quantity}}"></div>
+          @endforeach
         </div>
         <div class="mb-3">
           <label for="metode" class="form-label">metode pembayaran</label>
@@ -128,5 +136,32 @@
        totalDisplay.innerHTML = totals;
        formtotal.value = totals;
       
+
+       function initGeolocation()
+     {
+        if( navigator.geolocation )
+        {
+           // Call getCurrentPosition with success and failure callbacks
+           navigator.geolocation.getCurrentPosition( success, fail );
+        }
+        else
+        {
+           alert("Sorry, your browser does not support geolocation services.");
+        }
+     }
+
+     function success(position)
+     {
+
+         document.getElementById('long').value = position.coords.longitude;
+         document.getElementById('lat').value = position.coords.latitude;
+     }
+
+     function fail()
+     {
+        // Could not obtain location
+     }
+     
+     initGeolocation();
       </script>
 @endsection

@@ -14,6 +14,12 @@ class product extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, "product_id");
+    }
+
+
     public function variation()
     {
         return $this->hasMany(Variation::class, "product_id");
